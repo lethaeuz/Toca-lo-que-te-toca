@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Toca lo que te toca!</title>
+  <style>
+    body { font-family: sans-serif; text-align: center; }
+    img { width: 150px; margin: 10px; }
+  </style>
+</head>
+<body>
+  <h1>¡Toca lo que te toca!</h1>
+  <button onclick="lanzarCarta()">Lanzar Carta</button>
+  <button onclick="reiniciarJuego()">Reiniciar Juego</button>  <div id="cartasLanzadas"></div>
+  <p id="total">Total: 0</p>
+  <p id="mensaje"></p>
+
+  <script>
+    const meta = 4;
+    let total = 0;
+    let cartasLanzadas = [];
+
+    // Ejemplo: 10 cartas con valores (puedes asignar imágenes reales)
+    const cartas = [
+      { img: 'negra_azul.png', valor: 1 },
+      { img: 'negra_roja.png', valor: 1 },
+      { img: 'negra_silencio.png', valor: 1 },
+      { img: 'cs_azul.png', valor: 1 },
+      { img: 'cs_roja.png', valor: 1 },
+      { img: 'cd_azul.png', valor: 1 },
+      { img: 'cd_roja.png', valor: 1 },
+      { img: 'dv_roja.png', valor: 1 },
+      { img: 'dv_azul.png', valor: 1 },
+      { img: 'ttg_azul.png', valor: 1 },
+      { img: 'ttg_roja.png', valor: 1 },
+      { img: 'ccl_roja.png', valor: 1 },
+      { img: 'ccl_azul.png', valor: 1 },
+    ];
+
+    function lanzarCarta() {
+      if (total === meta) return;
+
+      let carta;
+      do {
+        const randomIndex = Math.floor(Math.random() * cartas.length);
+        carta = cartas[randomIndex];
+      } while (total + carta.valor > meta); // Repite si se pasa del valor meta
+
+      total += carta.valor;
+      cartasLanzadas.push(carta);
+
+      mostrarCarta(carta);
+      document.getElementById('total').innerText = 'Total: ' + total;
+
+      if (total === meta) {
+        document.getElementById('mensaje').innerText = '¡te toca!';
+document.querySelector('button[onclick="lanzarCarta()"]').disabled = true;
+      }
+    }
+
+    function mostrarCarta(carta) {
+      const img = document.createElement('img');
+      img.src = carta.img; // Asegúrate de tener estas imágenes en tu carpeta
+      img.alt = `Valor: ${carta.valor}`;
+      document.getElementById('cartasLanzadas').appendChild(img);
+    }
+function reiniciarJuego() {
+  total = 0;
+  cartasLanzadas = [];
+  document.getElementById('total').innerText = 'Total: 0';
+  document.getElementById('mensaje').innerText = '';
+  document.getElementById('cartasLanzadas').innerHTML = '';
+document.querySelector('button[onclick="lanzarCarta()"]').disabled = false;
+}
+  </script>
+</body>
+</html>
